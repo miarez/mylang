@@ -30,6 +30,7 @@ The goal is to create a turing-complete-esque language that we can begin to use 
 - [ ] Negation
 - [ ] elseif
 - [ ] Interpreter Functionality
+- [ ] Automatic Semicolon Insertion (ASI)
 
 ### v0.1 Builtins:
 
@@ -55,9 +56,16 @@ v0.2 will aim to standardize the syntax and how you interact with the language
 - [ ] optional semicolon
 - [ ] Pipping
 - [ ] Currying / Partial Application
+- [ ] BNR Representation
+- [ ] OOP
 
 - List Comprehension
   - ` [p.value for p in parameters]`
+
+## Features v0.3
+
+- [ ] concurrency
+- [ ] asynchronousity / event loops
 
 ## MISC TO DO:
 

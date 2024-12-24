@@ -39,6 +39,27 @@
                             "value_type": "list"
                         },
                         {
+                            "type": "LetStatement",
+                            "name": {
+                                "type": "IdentifierLiteral",
+                                "value": "b"
+                            },
+                            "value": {
+                                "type": "CallExpression",
+                                "function": {
+                                    "type": "IdentifierLiteral",
+                                    "value": "to_str"
+                                },
+                                "arguments": [
+                                    {
+                                        "type": "IdentifierLiteral",
+                                        "value": "a"
+                                    }
+                                ]
+                            },
+                            "value_type": "str"
+                        },
+                        {
                             "type": "ExpressionStatement",
                             "expression": {
                                 "type": "CallExpression",
@@ -48,8 +69,8 @@
                                 },
                                 "arguments": [
                                     {
-                                        "type": "IntegerLiteral",
-                                        "value": 123
+                                        "type": "IdentifierLiteral",
+                                        "value": "b"
                                     }
                                 ]
                             }

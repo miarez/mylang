@@ -27,6 +27,7 @@ from src.ast.expression.literal.ListLiteral import ListLiteral
 
 from src.compiler.Environment import Environment
 from src.compiler.builtins.BuiltinFunctionRegistry import BuiltinFunctionRegistry, PrintBuiltin
+from src.compiler.builtins.ToStrBuiltin import ToStrBuiltin
 
 class Compiler:
     def __init__(self) -> None:
@@ -46,12 +47,11 @@ class Compiler:
         self.__initialize_builtins()
 
 
-
-        
-
     def __initialize_builtins(self) -> None:
 
         self.builtin_registry.register("print", PrintBuiltin)
+        self.builtin_registry.register("to_str", ToStrBuiltin)
+
 
         def __init_booleans()-> tuple[ir.GlobalVariable, ir.GlobalVariable]:
             bool_type: ir.Type = self.type_map["bool"]
@@ -410,23 +410,19 @@ class Compiler:
 
         return global_var.bitcast(ir.IntType(8).as_pointer())
     
-
     def __visit_list_literal(self, node: ListLiteral) -> tuple[ir.Value, ir.Type]:
-        # Determine the element type (default to int for now; extendable later)
         element_type = self.type_map["int"]
-
-        # List type: array of elements
         list_type = ir.ArrayType(element_type, len(node.elements))
 
-        # Allocate memory for the list
-        array = self.builder.alloca(list_type)
+        # Allocate memory for the list => returns a pointer to `[N x int]`
+        array_ptr = self.builder.alloca(list_type, name="mylist")
 
-        # Populate the list with elements
+        # Populate the list
         for i, element in enumerate(node.elements):
-            value, _ = self.__resolve_value(element)  # Resolve the value of each element
-            index = ir.Constant(ir.IntType(32), i)
-            element_ptr = self.builder.gep(array, [ir.Constant(ir.IntType(32), 0), index])  # Get pointer to array element
-            self.builder.store(value, element_ptr)  # Store the resolved value into the array
+            value, _ = self.__resolve_value(element)
+            idx = ir.Constant(ir.IntType(32), i)
+            element_ptr = self.builder.gep(array_ptr, [ir.Constant(ir.IntType(32), 0), idx])
+            self.builder.store(value, element_ptr)
 
-        # Return the pointer to the array and its type
-        return array, list_type
+        # Here's the fix: return array_ptr and array_ptr.type (which is [N x i32]*)
+        return array_ptr, array_ptr.type
