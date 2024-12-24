@@ -1,0 +1,13 @@
+fn add(a:int, b:int) -> int {
+    return a + b;
+}
+
+fn sayHello(a:str) -> str {
+    return a;
+}
+
+fn main() -> str {
+    let hello:str = sayHello("hello world");
+    let b:int = add(10, 10);
+    return hello;
+}

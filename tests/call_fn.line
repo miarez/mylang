@@ -1,0 +1,8 @@
+fn meow() -> int {
+    return 41 * 2;
+}
+
+fn main() -> int {
+    let a: int = meow();
+    return a;
+}

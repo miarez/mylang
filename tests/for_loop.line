@@ -1,0 +1,7 @@
+fn main() -> int {
+    let a: int = 0;
+    for i in range(0, 5) {
+        a = a + i;
+    }
+    return a;
+}

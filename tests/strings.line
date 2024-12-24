@@ -1,0 +1,6 @@
+
+
+fn main() -> str {
+    let a: str = "hello world dawg";
+    return a;
+}
