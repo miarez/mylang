@@ -25,6 +25,7 @@ from src.ast.expression.literal.BooleanLiteral import BooleanLiteral
 from src.ast.expression.literal.StringLiteral import StringLiteral
 
 from src.compiler.Environment import Environment
+from src.compiler.BuiltinFunctionRegistry import BuiltinFunctionRegistry, PrintBuiltin
 
 class Compiler:
     def __init__(self) -> None:
@@ -36,18 +37,21 @@ class Compiler:
         }
 
         self.module:ir.Module = ir.Module("main")
-
         self.builder:ir.IRBuilder = ir.IRBuilder()
-
         self.environment = Environment()
-
         self.errors: list[str] = []
+        self.builtin_registry = BuiltinFunctionRegistry()
 
         self.__initialize_builtins()
+
+
 
         
 
     def __initialize_builtins(self) -> None:
+
+        self.builtin_registry.register("print", PrintBuiltin)
+
         def __init_booleans()-> tuple[ir.GlobalVariable, ir.GlobalVariable]:
             bool_type: ir.Type = self.type_map["bool"]
 
@@ -305,24 +309,38 @@ class Compiler:
         return value, Type
     
 
-    def __visit_call_expression(self, node: CallExpression) -> tuple[ir.Instruction, ir.Type]:
-        name: str = node.function.value 
+    def __visit_call_expression(self, node: CallExpression) -> tuple[ir.Value, ir.Type]:
+        """
+        Handles function calls, dynamically dispatching to built-in functions if needed,
+        or to user-defined functions otherwise.
+        """
+        name: str = node.function.value  # The name of the function being called
         parameters: list[Expression] = node.arguments
 
+        # Resolve arguments into LLVM IR values and their corresponding types
         args = []
         types = []
 
-        if len(parameters) > 0:
-            for x in parameters:
-                p_val, p_type = self.__resolve_value(x)
-                args.append(p_val)
-                types.append(p_type)
+        for param in parameters:
+            arg_val, arg_type = self.__resolve_value(param)
+            args.append(arg_val)
+            types.append(arg_type)
 
-        match name:
-            case _:
-                function, return_type = self.environment.lookup(name)
-                ret = self.builder.call(function, args)
+        # Check if this is a built-in function
+        builtin_handler_class = self.builtin_registry.get(name)
+        if builtin_handler_class:
+            # Instantiate the handler and call 'handle'
+            handler = builtin_handler_class(self)
+            return handler.handle(args, types)
 
+        # Otherwise, assume it's a user-defined function
+        try:
+            function, return_type = self.environment.lookup(name)
+        except KeyError:
+            raise ValueError(f"Function '{name}' not found in the current scope.")
+
+        # Emit a call to the user-defined function
+        ret = self.builder.call(function, args)
         return ret, return_type
 
 

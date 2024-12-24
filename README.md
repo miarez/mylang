@@ -3,12 +3,18 @@ to add:
 - [x] better folder layout
 - [ ] heavy commenting
 - [x] strings
+- [ ] Dynamic Main Wrapping
+- [ ] Incremental Compilation
+- [ ] Rich Main Function return types (structured return objects)
+- [ ] Virtual console
+- [ ] Error Handling
 - [ ] Type System (vectors & frames)
-- [ ] built-in functions
+- [x] built-in functions
 
-  - [ ] print to screen
+  - [x] print to screen
   - [ ] os functions (read/write files)
   - [ ] arithmetic functionality
+  - [ ] String functionality
 
 - [ ] Negation
 - [ ] elseif

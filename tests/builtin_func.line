@@ -1,0 +1,9 @@
+fn sayHello(a:str) -> str {
+    return a;
+}
+
+fn main() -> str {
+    let hello:str = sayHello("hello world");
+    print("hello world is a very long sentence and I want to make sure that it works of any lengths to be honest");
+    return "it worked!";
+}
