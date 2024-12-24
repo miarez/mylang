@@ -3,7 +3,6 @@ from llvmlite import ir
 from src.ast.Node import Node 
 from src.ast.NodeType import NodeType
 
-
 from src.ast.Program import Program
 from src.ast.statement.Statement import Statement 
 from src.ast.statement.ExpressionStatement import ExpressionStatement
@@ -25,7 +24,7 @@ from src.ast.expression.literal.BooleanLiteral import BooleanLiteral
 from src.ast.expression.literal.StringLiteral import StringLiteral
 
 from src.compiler.Environment import Environment
-from src.compiler.BuiltinFunctionRegistry import BuiltinFunctionRegistry, PrintBuiltin
+from src.compiler.builtins.BuiltinFunctionRegistry import BuiltinFunctionRegistry, PrintBuiltin
 
 class Compiler:
     def __init__(self) -> None:

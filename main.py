@@ -16,7 +16,7 @@ COMPILER_DEBUG: bool = True
 
 RUN_CODE = True
 
-with open("tests/builtin_func.line", "r") as f:
+with open("tests/lists.line", "r") as f:
     code:str = f.read()
 
 print(code)
