@@ -159,6 +159,11 @@ class Lexer:
             case "}":
                 token = self.__new_token(TokenType.RBRACE, self.current_char)
 
+            case "[":
+                token = self.__new_token(TokenType.LBRACKET, self.current_char)
+            case "]":
+                token = self.__new_token(TokenType.RBRACKET, self.current_char)
+
 
             case ":":
                 token = self.__new_token(TokenType.COLON, self.current_char)

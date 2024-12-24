@@ -44,6 +44,9 @@ class TokenType(Enum):
     LBRACE = "LBRACE"
     RBRACE = "RBRACE"
 
+    LBRACKET = "LBRACKET"  # Left bracket for lists
+    RBRACKET = "RBRACKET"  # Right bracket for lists
+
     # KEYWORDS
     LET = "LET"
     FN = "FN"

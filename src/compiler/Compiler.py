@@ -22,6 +22,8 @@ from src.ast.expression.literal.FloatLiteral import FloatLiteral
 from src.ast.expression.literal.IdentifierLiteral import IdentifierLiteral
 from src.ast.expression.literal.BooleanLiteral import BooleanLiteral
 from src.ast.expression.literal.StringLiteral import StringLiteral
+from src.ast.expression.literal.ListLiteral import ListLiteral
+
 
 from src.compiler.Environment import Environment
 from src.compiler.builtins.BuiltinFunctionRegistry import BuiltinFunctionRegistry, PrintBuiltin
@@ -90,13 +92,15 @@ class Compiler:
                 self.__visit_assignment_statement(node)
             case NodeType.IfStatement:
                 self.__visit_if_statement(node)
-
             # Expressions
             case NodeType.InfixExpression:
                 self.__visit_infix_expression(node)
 
             case NodeType.CallExpression:
                 self.__visit_call_expression(node)
+
+            case NodeType.ListLiteral:
+                return self.__visit_list_literal(node)
 
 
     # region Visit Methods (parent region)
@@ -114,22 +118,30 @@ class Compiler:
     def __visit_let_statement(self, node: LetStatement) -> None:
         name: str = node.name.value
         value: Expression = node.value 
-        value_type: str = node.value_type # todo implement (once we are doing type checking)
+        value_type: str = node.value_type  # TODO: type checking
 
         value, Type = self.__resolve_value(node=value)
 
         if self.environment.lookup(name) is None:
-            # define and allocate the variable 
+            # Define and allocate the variable
             pointer = self.builder.alloca(Type)
 
-            # Store the value 
-            self.builder.store(value, pointer)
+            # For arrays, store the actual array into the allocated memory
+            if isinstance(Type, ir.ArrayType):
+                self.builder.store(self.builder.load(value), pointer)
+            else:
+                # Store the value
+                self.builder.store(value, pointer)
 
-            # Add the variable to the environment 
+            # Add the variable to the environment
             self.environment.define(name, pointer, Type)
         else:
             pointer, _ = self.environment.lookup(name)
-            self.builder.store(value, pointer)
+            if isinstance(Type, ir.ArrayType):
+                self.builder.store(self.builder.load(value), pointer)
+            else:
+                self.builder.store(value, pointer)
+
 
 
     def __visit_block_statement(self, node: BlockStatement) -> None:
@@ -378,6 +390,9 @@ class Compiler:
 
             case NodeType.CallExpression:
                 return self.__visit_call_expression(node)
+            
+            case NodeType.ListLiteral:
+                return self.__visit_list_literal(node)
     # endregion
 
     def __create_string_constant(self, text: str) -> ir.Constant:
@@ -394,3 +409,24 @@ class Compiler:
         global_var.initializer = ir.Constant(str_type, byte_array)
 
         return global_var.bitcast(ir.IntType(8).as_pointer())
+    
+
+    def __visit_list_literal(self, node: ListLiteral) -> tuple[ir.Value, ir.Type]:
+        # Determine the element type (default to int for now; extendable later)
+        element_type = self.type_map["int"]
+
+        # List type: array of elements
+        list_type = ir.ArrayType(element_type, len(node.elements))
+
+        # Allocate memory for the list
+        array = self.builder.alloca(list_type)
+
+        # Populate the list with elements
+        for i, element in enumerate(node.elements):
+            value, _ = self.__resolve_value(element)  # Resolve the value of each element
+            index = ir.Constant(ir.IntType(32), i)
+            element_ptr = self.builder.gep(array, [ir.Constant(ir.IntType(32), 0), index])  # Get pointer to array element
+            self.builder.store(value, element_ptr)  # Store the resolved value into the array
+
+        # Return the pointer to the array and its type
+        return array, list_type

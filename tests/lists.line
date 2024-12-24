@@ -1,5 +1,7 @@
 fn main() -> str {
     let a: list = [1,2,3];
-    print(a);
+    print(123);
+    print(123.4);
+    print("hello");    
     return "success";
 }

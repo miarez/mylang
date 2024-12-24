@@ -31,7 +31,8 @@ KEYWORDS: dict[str, TokenType] = {
 TYPE_KEYWORDS: list[str] = [
     "str",
     "int",
-    "float"
+    "float",
+    "list"
 ]
 
 def lookup_identifier(identifier:str) -> TokenType:

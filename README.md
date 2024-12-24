@@ -14,7 +14,8 @@ The goal is to create a turing-complete-esque language that we can begin to use 
 - [x] OOP Based src directory layout
 - [ ] ELI5-esque comments
 - [x] string type
-- [ ] list type
+- [x] list type
+  - [ ] missing to string coercion logic
 - [ ] loop/enumeration
 - [x] builtin functions functionality
 - [ ] vectorized execution

@@ -23,6 +23,8 @@ from src.ast.expression.literal.FloatLiteral import FloatLiteral
 from src.ast.expression.literal.IdentifierLiteral import IdentifierLiteral
 from src.ast.expression.literal.BooleanLiteral import BooleanLiteral
 from src.ast.expression.literal.StringLiteral import StringLiteral
+from src.ast.expression.literal.ListLiteral import ListLiteral
+
 
 
 
@@ -48,7 +50,7 @@ class Parser:
             TokenType.FALSE: self.__parse_boolean,
             TokenType.STR: self.__parse_string_literal,            
 
-
+            TokenType.LBRACKET: self.__parse_list_literal,            
 
         } 
 
@@ -68,6 +70,7 @@ class Parser:
             TokenType.GT_EQ: self.__parse_infix_expression,
 
             TokenType.LPAREN: self.__parse_call_expression,
+
 
         }
 
@@ -449,4 +452,23 @@ class Parser:
         value = self.current_token.literal
         return StringLiteral(value=value)
 
+    def __parse_list_literal(self) -> ListLiteral:
+        elements = []
+
+        # Consume '['
+        self.__next_token()
+
+        if not self.__curent_token_is(TokenType.RBRACKET):
+            elements.append(self.__parse_expression(PrecedenceType.P_LOWEST))
+
+            while self.__peek_token_is(TokenType.COMMA):
+                self.__next_token()  # Skip comma
+                self.__next_token()  # Parse the next element
+                elements.append(self.__parse_expression(PrecedenceType.P_LOWEST))
+
+        # Ensure closing bracket
+        if not self.__expect_peek(TokenType.RBRACKET):
+            return None
+
+        return ListLiteral(elements=elements)
     # endregion
