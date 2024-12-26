@@ -15,7 +15,7 @@ COMPILER_DEBUG: bool = True
 
 RUN_CODE = True
 
-with open("tests/lists.line", "r") as f:
+with open("tests/interpreter.line", "r") as f:
     code:str = f.read()
 
 print(code)
@@ -42,49 +42,56 @@ if PARSER_DEBUG:
         json.dump(program.json(), f, indent=4)
     print("Wrote AST To debug/AST.json")
     
-compiler: Compiler = Compiler()
-compiler.compile(node=program)
 
-module: ir.Module = compiler.module
-# target architecture
-module.triple = llvm.get_default_triple()
+from src.interpreter.Interpreter import Interpreter
 
-if COMPILER_DEBUG:
-    print("============= COMPILER_DEBUG DEBUG ================= ")
-    with open("debug/ir.ll", "w") as f:
-        f.write(str(module))
-    print("Wrote module To debug/ir.ll")
+interpreter = Interpreter()
+result = interpreter.interpret(program)
+print("Program result:", result)
 
-if RUN_CODE:
-    llvm.initialize()
-    llvm.initialize_native_target()
-    llvm.initialize_native_asmprinter()
+# compiler: Compiler = Compiler()
+# compiler.compile(node=program)
 
-    try:
-        llvm_ir_parsed = llvm.parse_assembly(str(module))
-        llvm_ir_parsed.verify()
-    except Exception as e:
-        print(e)
-        raise
+# module: ir.Module = compiler.module
+# # target architecture
+# module.triple = llvm.get_default_triple()
 
-    target_machine = llvm.Target.from_default_triple().create_target_machine()
+# if COMPILER_DEBUG:
+#     print("============= COMPILER_DEBUG DEBUG ================= ")
+#     with open("debug/ir.ll", "w") as f:
+#         f.write(str(module))
+#     print("Wrote module To debug/ir.ll")
 
-    engine = llvm.create_mcjit_compiler(llvm_ir_parsed, target_machine)
-    engine.finalize_object()
+# if RUN_CODE:
+#     llvm.initialize()
+#     llvm.initialize_native_target()
+#     llvm.initialize_native_asmprinter()
 
-    # entry = engine.get_function_address('main') # access point function
-    # cfunction = CFUNCTYPE(c_int)(entry)
-    # start_time = time.time()
-    # result = cfunction() 
-    # end_time = time.time()
-    # print(f"\n\n Program Returned : {result} \n === Executed In {round(end_time-start_time*1000, 6)} ms. ===")
+#     try:
+#         llvm_ir_parsed = llvm.parse_assembly(str(module))
+#         llvm_ir_parsed.verify()
+#     except Exception as e:
+#         print(e)
+#         raise
 
-    entry = engine.get_function_address('main')
-    cfunction = CFUNCTYPE(c_char_p)(entry)
-    start_time = time.time()
-    result_ptr = cfunction()
-    end_time = time.time()
-    print(result_ptr.decode('utf-8')) 
+#     target_machine = llvm.Target.from_default_triple().create_target_machine()
+
+#     engine = llvm.create_mcjit_compiler(llvm_ir_parsed, target_machine)
+#     engine.finalize_object()
+
+#     # entry = engine.get_function_address('main') # access point function
+#     # cfunction = CFUNCTYPE(c_int)(entry)
+#     # start_time = time.time()
+#     # result = cfunction() 
+#     # end_time = time.time()
+#     # print(f"\n\n Program Returned : {result} \n === Executed In {round(end_time-start_time*1000, 6)} ms. ===")
+
+#     entry = engine.get_function_address('main')
+#     cfunction = CFUNCTYPE(c_char_p)(entry)
+#     start_time = time.time()
+#     result_ptr = cfunction()
+#     end_time = time.time()
+#     print(result_ptr.decode('utf-8')) 
 
 
 

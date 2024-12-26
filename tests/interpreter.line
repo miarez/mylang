@@ -1,0 +1,13 @@
+fn meow(a: int, b:int) -> int {
+
+    return a + b;
+}
+
+fn main() -> str {
+    let c: int = 40;
+    let a: str = "hello world";
+    let b: int = meow(10, 20);
+    print(c);
+
+    return "hey";
+}

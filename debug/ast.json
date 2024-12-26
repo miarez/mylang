@@ -6,6 +6,48 @@
                 "type": "FunctionStatement",
                 "name": {
                     "type": "IdentifierLiteral",
+                    "value": "meow"
+                },
+                "return_type": "int",
+                "parameters": [
+                    {
+                        "type": "FunctionParameter",
+                        "name": "a",
+                        "value_type": "int"
+                    },
+                    {
+                        "type": "FunctionParameter",
+                        "name": "b",
+                        "value_type": "int"
+                    }
+                ],
+                "body": {
+                    "type": "BlockStatement",
+                    "statements": [
+                        {
+                            "type": "ReturnStatement",
+                            "return_value": {
+                                "type": "InfixExpression",
+                                "left_node": {
+                                    "type": "IdentifierLiteral",
+                                    "value": "a"
+                                },
+                                "operator": "+",
+                                "right_node": {
+                                    "type": "IdentifierLiteral",
+                                    "value": "b"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "FunctionStatement": {
+                "type": "FunctionStatement",
+                "name": {
+                    "type": "IdentifierLiteral",
                     "value": "main"
                 },
                 "return_type": "str",
@@ -17,26 +59,25 @@
                             "type": "LetStatement",
                             "name": {
                                 "type": "IdentifierLiteral",
+                                "value": "c"
+                            },
+                            "value": {
+                                "type": "IntegerLiteral",
+                                "value": 40
+                            },
+                            "value_type": "int"
+                        },
+                        {
+                            "type": "LetStatement",
+                            "name": {
+                                "type": "IdentifierLiteral",
                                 "value": "a"
                             },
                             "value": {
-                                "type": "ListLiteral",
-                                "elements": [
-                                    {
-                                        "type": "IntegerLiteral",
-                                        "value": 1
-                                    },
-                                    {
-                                        "type": "IntegerLiteral",
-                                        "value": 2
-                                    },
-                                    {
-                                        "type": "IntegerLiteral",
-                                        "value": 3
-                                    }
-                                ]
+                                "type": "StringLiteral",
+                                "value": "hello world"
                             },
-                            "value_type": "list"
+                            "value_type": "str"
                         },
                         {
                             "type": "LetStatement",
@@ -48,16 +89,20 @@
                                 "type": "CallExpression",
                                 "function": {
                                     "type": "IdentifierLiteral",
-                                    "value": "to_str"
+                                    "value": "meow"
                                 },
                                 "arguments": [
                                     {
-                                        "type": "IdentifierLiteral",
-                                        "value": "a"
+                                        "type": "IntegerLiteral",
+                                        "value": 10
+                                    },
+                                    {
+                                        "type": "IntegerLiteral",
+                                        "value": 20
                                     }
                                 ]
                             },
-                            "value_type": "str"
+                            "value_type": "int"
                         },
                         {
                             "type": "ExpressionStatement",
@@ -70,7 +115,7 @@
                                 "arguments": [
                                     {
                                         "type": "IdentifierLiteral",
-                                        "value": "b"
+                                        "value": "c"
                                     }
                                 ]
                             }
@@ -79,7 +124,7 @@
                             "type": "ReturnStatement",
                             "return_value": {
                                 "type": "StringLiteral",
-                                "value": "success"
+                                "value": "hey"
                             }
                         }
                     ]
