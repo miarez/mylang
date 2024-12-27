@@ -2,6 +2,7 @@ from src.lexer.Lexer import Lexer
 from src.parser.Parser import Parser
 from src.compiler.Compiler import Compiler
 from src.ast.Program import Program
+from src.interpreter.Interpreter import Interpreter
 import json
 import time
 
@@ -10,44 +11,42 @@ import llvmlite.binding as llvm
 from ctypes import CFUNCTYPE, c_int, c_float, c_char_p
 
 LEXER_DEBUG: bool = False 
-PARSER_DEBUG: bool = True
-COMPILER_DEBUG: bool = True
-
 RUN_CODE = True
 
-with open("tests/interpreter.line", "r") as f:
+with open("tests/block_statements.line", "r") as f:
     code:str = f.read()
 
-print(code)
+print(f" Source Code: \n {code}")
+
+
+print("--- RUNNING LEXER")    
+lexer = Lexer(source=code)
 
 if LEXER_DEBUG:
-    print("============= LEXER DEBUG ================= ")
-    debug_lex = Lexer(source=code)
-    while debug_lex.current_char is not None:
-        print(debug_lex.next_token())
+    print("============= LEXER DEBUG ================= ")    
+    while lexer.current_char is not None:
+        print(lexer.next_token())
 
-lexer: Lexer = Lexer(source=code)
+print("--- RUNNING PARSER")    
+
 parser: Parser = Parser(lexer=lexer)
 
 program: Program = parser.parse_program()
 if len(parser.errors) > 0:
+    print("============= PARSER ERRORS FOUND ================= ")
     for err in parser.errors:
         print(err)
     exit(1)
 
-if PARSER_DEBUG:
-    print("============= PARSER DEBUG ================= ")
+with open("debug/ast.json", "w") as f:
+    json.dump(program.json(), f, indent=4)
+print("Wrote AST To debug/AST.json")
 
-    with open("debug/ast.json", "w") as f:
-        json.dump(program.json(), f, indent=4)
-    print("Wrote AST To debug/AST.json")
-    
 
-from src.interpreter.Interpreter import Interpreter
-
-interpreter = Interpreter()
-result = interpreter.interpret(program)
-print("Program result:", result)
+if RUN_CODE:
+    interpreter = Interpreter()
+    result = interpreter.interpret(program)
+    print("Program result:", result)
 
 # compiler: Compiler = Compiler()
 # compiler.compile(node=program)

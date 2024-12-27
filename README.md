@@ -5,20 +5,20 @@ v0.1 aims to provide all the basic functionality of a language such as:
 - [x] lexer
 - [x] ast
 - [x] parser
-- [x] llvm IR compiler
+- [x] interpreter
 
 The goal is to create a turing-complete-esque language that we can begin to use & benchmark
 
 ### Must Haves:
 
+- [ ] Nested block statements
+  - `<block> :: = <statement> | {  [<block>]*  }`
 - [x] OOP Based src directory layout
 - [ ] ELI5-esque comments
 - [x] string type
 - [x] list type
-  - [ ] missing to string coercion logic
 - [ ] loop/enumeration
 - [x] builtin functions functionality
-- [ ] vectorized execution
 - [ ] Type System (vectors, frames, etc)
 
 ### Nice To Haves:
@@ -50,6 +50,8 @@ The goal is to create a turing-complete-esque language that we can begin to use 
 
 v0.2 will aim to standardize the syntax and how you interact with the language
 
+- [ ] llvm IR compiler
+- [ ] vectorized execution
 - [ ] Dynamic Main Wrapping
 - [ ] Incremental Compilation
 - [ ] Rich Main Function return types (structured return objects)

@@ -126,9 +126,11 @@ class Interpreter:
         raise ReturnValue(value)
 
     def visit_BlockStatement(self, node, env: Environment):
+        # Create a new environment for the block
+        block_env = Environment(parent=env)
         result = None
         for stmt in node.statements:
-            result = self.visit(stmt, env)
+            result = self.visit(stmt, block_env)
         return result
 
     def visit_IfStatement(self, node, env: Environment):

@@ -1,0 +1,12 @@
+
+
+fn main() -> int {
+    {
+    let a:int = 10; 
+        {
+            let b:int = 20;
+        }
+    print(b);
+    }
+    return 5;
+}

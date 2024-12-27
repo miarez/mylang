@@ -44,6 +44,7 @@ class Lexer:
     def __new_token(self, tokenType: TokenType, literal: Any) -> Token:
         return Token(type=tokenType, literal=literal, line_no=self.line_no, position=self.position)
 
+    # Recognizer Functions
 
     def __is_digit(self, character: str) -> bool:
         return '0' <= character and character <= '9'
