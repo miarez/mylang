@@ -1,13 +1,13 @@
 from src.lexer.Lexer import Lexer
 from src.parser.Parser import Parser
-from src.compiler.Compiler import Compiler
+# from src.compiler.Compiler import Compiler
 from src.ast.Program import Program
 from src.interpreter.Interpreter import Interpreter
 import json
 import time
 
-from llvmlite import ir
-import llvmlite.binding as llvm
+# from llvmlite import ir
+# import llvmlite.binding as llvm
 from ctypes import CFUNCTYPE, c_int, c_float, c_char_p
 
 LEXER_DEBUG: bool = False 

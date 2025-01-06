@@ -56,7 +56,7 @@
                                         "arguments": [
                                             {
                                                 "type": "IdentifierLiteral",
-                                                "value": "b"
+                                                "value": "a"
                                             }
                                         ]
                                     }

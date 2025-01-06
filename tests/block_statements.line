@@ -6,7 +6,7 @@ fn main() -> int {
         {
             let b:int = 20;
         }
-    print(b);
+    print(a);
     }
     return 5;
 }
