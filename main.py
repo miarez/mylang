@@ -13,7 +13,7 @@ from ctypes import CFUNCTYPE, c_int, c_float, c_char_p
 LEXER_DEBUG: bool = False 
 RUN_CODE = True
 
-with open("tests/block_statements.line", "r") as f:
+with open("tests/printf.line", "r") as f:
     code:str = f.read()
 
 print(f" Source Code: \n {code}")

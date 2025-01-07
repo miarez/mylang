@@ -1,5 +1,5 @@
 from typing import Any, Dict, List, Optional
-
+from src.interpreter.Builtins import Builtins
 # --------------------------------------------------------------------
 #  Environment
 # --------------------------------------------------------------------
@@ -55,8 +55,12 @@ class Interpreter:
     """
     def __init__(self):
         self.global_env = Environment()
+
+        self.builtins = Builtins(self)
         self.builtin_functions = {
-            "print": self.builtin_print
+            "print": self.builtins.builtin_print,
+            "printf": self.builtins.builtin_printf,
+            "sprintf" : self.builtins.builtin_sprintf
         }
 
     def interpret(self, program):
@@ -77,13 +81,6 @@ class Interpreter:
                 raise Exception("'main' is not callable.")
         else:
             raise Exception("No 'main' function defined.")
-
-    # ----------------------------------------------------------------
-    #  Built-in Functions
-    # ----------------------------------------------------------------
-    def builtin_print(self, *args):
-        print(*args)
-        return None
 
     # ----------------------------------------------------------------
     #  Node Visitors

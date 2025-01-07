@@ -306,7 +306,7 @@ class Parser:
     def __parse_boolean(self) -> BooleanLiteral:
         return BooleanLiteral(value=self.__curent_token_is(TokenType.TRUE))
 
-    def __parse_string_literal(self):
+    def __parse_string_literal(self) -> StringLiteral:
         value = self.current_token.literal
         return StringLiteral(value=value)
 

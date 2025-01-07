@@ -1,0 +1,13 @@
+fn add(a: int, b:int) -> int {
+    return a + b;
+}
+
+fn main() -> str {
+
+    let a: str = sprintf("i should see %i", 10);
+    print(a);
+    
+    printf("should be float %f", add(10, 20));    
+    printf("add returns int %i", add(10, 20));
+    return "gucci";
+}
