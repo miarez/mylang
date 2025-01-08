@@ -35,7 +35,8 @@ The goal is to create a turing-complete-esque language that we can begin to use 
 ### v0.1 Builtins:
 
 - [ ] IO
-  - [x] print, printf
+  - [x] print
+  - [x] printf
 - [ ] String
     - [x] interpolation (sprintf)
 - [ ] Mathematics and Arithmetic
