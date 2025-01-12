@@ -1,0 +1,9 @@
+
+
+
+countries = ['ca', 'us', 'fr', 'gb', 'it']
+
+data = df(
+    countries = countries,
+    values = [100, 200, 300, 400, 600]
+)
