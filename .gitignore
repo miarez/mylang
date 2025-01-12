@@ -1,1 +1,8 @@
 __pycache__/
+
+# Ignore build artifacts
+/build/
+*.o
+*.exe
+*.out
+/personal/
